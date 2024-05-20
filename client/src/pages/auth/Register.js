@@ -1,8 +1,32 @@
 import React, { useState } from "react";
+import { auth } from "../../firebase";
+import { sendSignInLinkToEmail } from "firebase/auth";
+import { notification } from "antd";
 
 const Register = () => {
   const [email, setEmail] = useState("");
-  const handleSubmit = () => {};
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const actionCodeSettings = {
+      url: "http://localhost:3000/register/complete",
+      handleCodeInApp: true,
+    };
+
+    await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+
+    // Success message
+    const openSuccess = (type) => {
+      notification[type]({
+        message: "Success",
+        description: "Please check your email and follow the link provided",
+      });
+    };
+    openSuccess("success");
+    // save the email in local storage
+    window.localStorage.setItem("emailForSignIn", email);
+    setEmail("");
+  };
 
   const registerForm = () => {
     return (
