@@ -1,12 +1,18 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { auth } from "../../firebase";
+import { signOut } from "firebase/auth";
+
+import { Menu } from "antd";
 import {
   AppstoreOutlined,
   SettingOutlined,
   UserOutlined,
   UsergroupAddOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
-import { Menu } from "antd";
 
 const items1 = [
   {
@@ -30,6 +36,7 @@ const items1 = [
       {
         label: "Logout",
         key: "logout",
+        icon: <LogoutOutlined />,
       },
     ],
   },
@@ -58,9 +65,25 @@ const items2 = [
 
 const Header = () => {
   const [current, setCurrent] = useState("home");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const logout = async () => {
+    console.log("logout is clicked");
+    await signOut(auth);
+    dispatch({
+      type: "LOGOUT",
+      payload: null,
+    });
+    navigate("/login");
+  };
+
   const onClick = (e) => {
     console.log("click", e);
     setCurrent(e.key);
+    if (e.key === "logout") {
+      logout();
+    }
   };
   return (
     <div className="d-flex">
