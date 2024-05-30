@@ -51,6 +51,7 @@ const Register = () => {
           required
           autoFocus
         />
+        <br />
         <button type="submit" className="btn btn-primary">
           Register
         </button>
