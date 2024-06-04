@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { notification } from "antd";
 import { auth } from "../../firebase";
@@ -130,6 +130,12 @@ const Login = () => {
         >
           Login with Google
         </Button>
+        <Link
+          to="/forgot/password"
+          className="text-decoration-none text-danger float-end"
+        >
+          Forgot Password
+        </Link>
       </form>
     );
   };
