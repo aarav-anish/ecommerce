@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { notification } from "antd";
 import { auth } from "../../firebase";
 import {
@@ -13,11 +13,17 @@ import { Button } from "antd";
 import { GoogleOutlined, MailOutlined } from "@ant-design/icons";
 
 const Login = () => {
+  // redirect to home page if user is already logged in
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => ({ ...state }));
+  useEffect(() => {
+    if (user && user.token) navigate("/");
+  }, [user, navigate]);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const provider = new GoogleAuthProvider();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const googleLogin = async () => {
