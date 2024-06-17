@@ -4,9 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
-
-// import routes
-const authRoutes = require("./routes/auth");
+const { readdirSync } = require("fs");
 
 // app
 const app = express();
@@ -19,7 +17,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true, limit: "2mb" }));
 
 // routes middleware
-app.use("/", authRoutes);
+readdirSync("./routes").map((r) => app.use("/api", require("./routes/" + r)));
 
 // mongoose connection
 mongoose
