@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
 
+// import routes
+const authRoutes = require("./routes/auth");
+
 // app
 const app = express();
 
@@ -15,15 +18,14 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true, limit: "2mb" }));
 
+// routes middleware
+app.use("/", authRoutes);
+
 // mongoose connection
 mongoose
   .connect(process.env.DATABASE)
   .then(() => console.log("MongoDB connection established."))
   .catch((error) => console.error("MongoDB connection failed:", error.message));
-
-app.get("/api", (req, res) => {
-  res.send("This is a node api");
-});
 
 // port
 const port = process.env.PORT || 8000;
