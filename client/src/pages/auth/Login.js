@@ -12,6 +12,18 @@ import {
 import { Button } from "antd";
 import { GoogleOutlined, MailOutlined } from "@ant-design/icons";
 
+import axios from "axios";
+
+const createOrUpdateUser = async (authToken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/create-or-update-user`,
+    {},
+    {
+      headers: { authToken: authToken },
+    }
+  );
+};
+
 const Login = () => {
   // redirect to home page if user is already logged in
   const navigate = useNavigate();
@@ -33,6 +45,10 @@ const Login = () => {
       const user = result.user;
       const userToken = user.accessToken;
       const googleToken = credential.accessToken;
+
+      createOrUpdateUser(userToken)
+        .then((res) => console.log("create or update result", res))
+        .catch();
 
       dispatch({
         type: "LOGGED_IN_USER",
